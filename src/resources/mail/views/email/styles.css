@@ -1,0 +1,117 @@
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+}
+
+header {
+  background: #353535;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-family: sans-serif;
+}
+
+.header {  
+  text-align: center;
+  background-color: #89229B;
+  padding: 1px 0px 1px;
+  border-radius: 10px;
+}
+
+.header h1 {
+  position: relative;
+  color: #FFFF;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  background-color: #353535;
+}
+
+.mainBlock {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+  flex: 1 1 0%;
+  padding: 32px;
+}
+
+.panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  flex: 1 1 0%;
+  padding: 28px 0px 50px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;;
+  width: 100%;  
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 50px 0px 50px;
+  background-color: #474747;
+  box-shadow: -1px -1px 1px #784A78, 1px 1px 1px #784A78;
+  border-radius: 5px;
+}
+
+.content span {
+  color: #FFFF;
+}
+
+.content h3 {
+  color: #FFF;
+}
+
+.content h1 {  
+  margin: 0px auto 32px;
+  font-size: 25px;
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+}
+
+.input {
+  font: 400 13.3333px Arial;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  font-weight: bold;
+  height: 7vh;
+  width: 20vw;
+  background: #89229B;
+  border-radius: 5px;
+  border-width: 0px;
+  border-style: initial;
+  border-color: initial;
+  border-image: initial;
+  cursor: pointer;
+  outline: none;
+  margin-top: 30px;
+}
+
+.footer {
+  background-color: #89229B;
+  padding: 1px 0px 1px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  
+  display: flex;
+  flex-direction: column;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+.footer small {
+    font-family: sans-serif;
+    font-size: 12px;
+}

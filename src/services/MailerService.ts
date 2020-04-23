@@ -2,11 +2,13 @@ import nodemailer from 'nodemailer'
 import hbs from 'nodemailer-express-handlebars' // tslint:disable-line
 import path from 'path'
 
+import config from '../configEmail.json'
+
 const account = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'ctrfinances@gmail.com',
-    pass: 'Control@2020'
+    user: config.user,
+    pass: config.pass
   }
 }).use('compile', hbs({
   viewEngine: {
@@ -27,7 +29,7 @@ class MailerService {
         to: nickname + ' ' + '<' + email + '>',
         subject: 'Forgot password',
         template: 'forgotPassword',
-        context: { token }
+        context: { token, nickname }
       })
     } catch (err) {
       console.log('Error: ' + err)
