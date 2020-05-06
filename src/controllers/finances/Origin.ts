@@ -36,16 +36,16 @@ class OriginController {
 
     const err: Err[] = []
     try {
+      if (!await UserModel.findById(user)) {
+        err.push({ field: 'title', error: 'Usuário não encontrado!' })
+      }
+
       if (await OriginModel.findOne({ title: title })) {
         err.push({ field: 'title', error: 'Origem já cadastrada!' })
       }
 
       if (!await TagModel.findById(tag)) {
-        err.push({ field: 'title', error: 'Origem já cadastrada!' })
-      }
-
-      if (!await UserModel.findById(user)) {
-        err.push({ field: 'title', error: 'Origem já cadastrada!' })
+        err.push({ field: 'title', error: 'Tag não encontrado!' })
       }
 
       if (err.length) { return res.status(500).send({ message: 'More than one error occurred', error: err }) }

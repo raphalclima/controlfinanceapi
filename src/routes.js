@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import AuthMiddleware from './middlewares/AuthMiddleware'
-import { UserController, TagController, OriginController } from './controllers/Index'
+import { UserController, FinanceController, TagController, OriginController } from './controllers/Index'
 
 const routes = Router()
 
@@ -28,5 +28,11 @@ routes.get('/origins/:id', AuthMiddleware, OriginController.index)
 routes.post('/origins', AuthMiddleware, OriginController.register)
 routes.put('/origins/:id', AuthMiddleware, OriginController.update)
 routes.delete('/origins/:id', AuthMiddleware, OriginController.destroy)
+
+// Finance Routes
+routes.get('/finances/:id', AuthMiddleware, FinanceController.index)
+routes.post('/finances', AuthMiddleware, FinanceController.register)
+routes.put('/finances/:id', AuthMiddleware, FinanceController.update)
+routes.delete('./finances/:id', AuthMiddleware, FinanceController.destroy)
 
 export default routes

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import { UserModel, TagModel, OriginModel } from '../../models/Index'
+import { UserModel, FinanceModel, TagModel, OriginModel } from '../../models/Index'
 
 interface Err {
   field: string;
@@ -14,61 +14,61 @@ class FinanceController {
         return res.status(500).send({ field: 'user', error: 'Usuário não encontrado!' })
       }
 
-      const origin = await OriginModel.find({ user: req.params.id })
+      const finance = await FinanceModel.find({ user: req.params.id })
 
-      return res.json(origin)
+      return res.json(finance)
     } catch (err) {
-      return res.status(500).send({ message: 'Falha ao buscar origens', error: err })
+      return res.status(500).send({ message: 'Falha ao buscar finanças', error: err })
     }
   }
 
   public async findById (req: Request, res: Response): Promise<Response> {
-    const origin = await OriginModel.findById(req.params.id,
+    const finance = await FinanceModel.findById(req.params.id,
       (err, result) => {
         if (err) { return res.status(400).send({ error: err }) } else { return result }
       })
 
-    return res.json(origin)
+    return res.json(finance)
   }
 
   public async register (req: Request, res: Response): Promise<Response> {
-    const { title, user, tag } = req.body
+    const { user, tag, origin } = req.body
 
     const err: Err[] = []
     try {
-      if (await OriginModel.findOne({ title: title })) {
-        err.push({ field: 'title', error: 'Origem já cadastrada!' })
+      if (!await UserModel.findById(user)) {
+        err.push({ field: 'title', error: 'Usuário não encontrado!' })
       }
 
       if (!await TagModel.findById(tag)) {
-        err.push({ field: 'title', error: 'Origem já cadastrada!' })
+        err.push({ field: 'title', error: 'Tag não encontrada!' })
       }
 
-      if (!await UserModel.findById(user)) {
-        err.push({ field: 'title', error: 'Origem já cadastrada!' })
+      if (!await OriginModel.findById(origin)) {
+        err.push({ field: 'title', error: 'Origin não encontrada!' })
       }
 
       if (err.length) { return res.status(500).send({ message: 'More than one error occurred', error: err }) }
 
-      const origin = await OriginModel.create(req.body)
+      const finance = await FinanceModel.create(req.body)
 
-      return res.json(origin)
+      return res.json(finance)
     } catch (err) {
       return res.status(500).send({ message: 'Registration failed', error: err })
     }
   }
 
   public async update (req: Request, res: Response): Promise<Response> {
-    const origin = await OriginModel.findByIdAndUpdate(req.params.id, req.body, { new: true },
+    const finance = await FinanceModel.findByIdAndUpdate(req.params.id, req.body, { new: true },
       (err, result) => {
         if (err) { return res.status(500).send({ error: err }) } else { return result }
       })
 
-    return res.json(origin)
+    return res.json(finance)
   }
 
   public async destroy (req: Request, res: Response): Promise<Response> {
-    await OriginModel.findByIdAndRemove(req.params.id,
+    await FinanceModel.findByIdAndRemove(req.params.id,
       (err, result) => {
         if (err) { return res.status(500).send({ error: err }) } else { return result }
       })
