@@ -5,7 +5,7 @@ import crypto from 'crypto'
 import AuthSrevice from '../services/AuthService'
 import MailerService from '../services/MailerService'
 
-import User from '../models/User'
+import { UserModel } from '../models/Index'
 
 interface Err {
   field: string;
@@ -14,7 +14,7 @@ interface Err {
 
 class UserController {
   public async findById (req: Request, res: Response): Promise<Response> {
-    const user = await User.findById(req.params.id,
+    const user = await UserModel.findById(req.params.id,
       (err, result) => {
         if (err) { return res.status(400).send({ error: err }) } else { return result }
       })
@@ -25,14 +25,14 @@ class UserController {
   public async register (req: Request, res: Response): Promise<Response> {
     try {
       const err: Err[] = []
-      if (await User.findOne({ username: req.body.username })) {
+      if (await UserModel.findOne({ username: req.body.username })) {
         err.push({
           field: 'username',
           error: 'Usuário já cadastrado!'
         })
       }
 
-      if (await User.findOne({ email: req.body.email })) {
+      if (await UserModel.findOne({ email: req.body.email })) {
         err.push({
           field: 'email',
           error: 'E-mail já cadastrado!'
@@ -41,7 +41,7 @@ class UserController {
 
       if (err.length) { return res.status(500).send({ message: 'More than one error occurred', error: err }) }
 
-      const user = await User.create(req.body)
+      const user = await UserModel.create(req.body)
       user.password = ''
 
       return res.json({
@@ -54,7 +54,7 @@ class UserController {
   }
 
   public async update (req: Request, res: Response): Promise<Response> {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true },
+    const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true },
       (err, result) => {
         if (err) { return res.status(400).send({ error: err }) } else { return result }
       })
@@ -63,7 +63,7 @@ class UserController {
   }
 
   public async destroy (req: Request, res: Response): Promise<Response> {
-    await User.findByIdAndRemove(req.params.id,
+    await UserModel.findByIdAndRemove(req.params.id,
       (err, result) => {
         if (err) { return res.send({ error: err }) } else { return result }
       })
@@ -76,7 +76,7 @@ class UserController {
     let user
 
     try {
-      user = await User.findOne({ username: username }).select('+password')
+      user = await UserModel.findOne({ username: username }).select('+password')
 
       if (!user) { return res.status(400).send(new Array({ field: 'username', error: 'Usuário não encontrado!' })) }
 
@@ -95,7 +95,7 @@ class UserController {
 
   public async forgotPassword (req: Request, res: Response): Promise<Response> {
     try {
-      const user = await User.findOne({ email: req.body.email })
+      const user = await UserModel.findOne({ email: req.body.email })
 
       if (!user) {
         return res.status(500).send({ field: 'email', error: 'E-mail não encontrado!' })
@@ -105,7 +105,7 @@ class UserController {
       const now = new Date()
       now.setHours(now.getHours() + 1)
 
-      await User.findByIdAndUpdate(user.id, {
+      await UserModel.findByIdAndUpdate(user.id, {
         $set: {
           passwordResetToken: token,
           passwordResetExpiress: now
@@ -125,14 +125,13 @@ class UserController {
     let user
 
     try {
-      user = await User.findOne({ passwordResetToken: passwordResetToken })
+      user = await UserModel.findOne({ passwordResetToken: passwordResetToken })
         .select('+nickname email username passwordResetToken passwordResetExpiress')
 
       if (!user) {
         return res.status(500).send({ error: 'Token invalid' })
       }
 
-      console.log('pior que passei')
       const now = new Date()
 
       if (now > user.passwordResetExpiress) {

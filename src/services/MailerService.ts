@@ -32,7 +32,7 @@ class MailerService {
         context: { token, nickname }
       })
     } catch (err) {
-      console.log('Error: ' + err)
+      throw new Error('Error: ' + err)
     }
   }
 }

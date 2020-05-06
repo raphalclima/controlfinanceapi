@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 
-import Tag from '../models/Tag'
-import User from '../models/User'
-import Origin from '../models/Origin'
+import { UserModel, TagModel, OriginModel } from '../../models/Index'
 
 interface OriginInterface {
   id: string;
@@ -18,12 +16,12 @@ interface TagInterface {
 class TagController {
   public async index (req: Request, res: Response): Promise<Response> {
     try {
-      if (!await User.findById(req.params.id)) {
+      if (!await UserModel.findById(req.params.id)) {
         return res.status(500).send({ field: 'user', error: 'Usuário não encontrado!' })
       }
 
-      const tag = await Tag.find({ user: req.params.id })
-      const origins = await Origin.find({ user: req.params.id })
+      const tag = await TagModel.find({ user: req.params.id })
+      const origins = await OriginModel.find({ user: req.params.id })
 
       const newTag = [] as TagInterface[]
 
@@ -58,7 +56,7 @@ class TagController {
   }
 
   public async findById (req: Request, res: Response): Promise<Response> {
-    const tag = await Tag.findById(req.params.id,
+    const tag = await TagModel.findById(req.params.id,
       (err, result) => {
         if (err) { return res.status(400).send({ error: err }) } else { return result }
       })
@@ -70,15 +68,15 @@ class TagController {
     const { title, user } = req.body
 
     try {
-      if (await Tag.findOne({ title: title })) {
+      if (await TagModel.findOne({ title: title })) {
         return res.status(500).send({ field: 'title', error: 'Tag já cadastrada!' })
       }
 
-      if (!await User.findById(user)) {
+      if (!await UserModel.findById(user)) {
         return res.status(500).send({ field: 'user', error: 'Usuário não encontrado!' })
       }
 
-      const tag = await Tag.create(req.body)
+      const tag = await TagModel.create(req.body)
 
       return res.json(tag)
     } catch (err) {
@@ -87,7 +85,7 @@ class TagController {
   }
 
   public async update (req: Request, res: Response): Promise<Response> {
-    const tag = await Tag.findByIdAndUpdate(req.params.id, req.body, { new: true },
+    const tag = await TagModel.findByIdAndUpdate(req.params.id, req.body, { new: true },
       (err, result) => {
         if (err) { return res.status(500).send({ error: err }) } else { return result }
       })
@@ -96,7 +94,7 @@ class TagController {
   }
 
   public async destroy (req: Request, res: Response): Promise<Response> {
-    await Tag.findByIdAndRemove(req.params.id,
+    await TagModel.findByIdAndRemove(req.params.id,
       (err, result) => {
         if (err) { return res.status(500).send({ error: err }) } else { return result }
       })
