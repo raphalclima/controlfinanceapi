@@ -78,7 +78,7 @@ class UserController {
     try {
       user = await User.findOne({ username: username }).select('+password')
 
-      if (!user) { return res.status(400).send({ field: 'username', error: 'Usuário não encontrado!' }) }
+      if (!user) { return res.status(400).send(new Array({ field: 'username', error: 'Usuário não encontrado!' })) }
 
       if (!await bcrypt.compare(password, user.password)) { return res.status(400).send({ field: 'password', error: 'Senha inválida!' }) }
 

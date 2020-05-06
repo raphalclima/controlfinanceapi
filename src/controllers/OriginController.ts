@@ -4,6 +4,11 @@ import Origin from '../models/Origin'
 import Tag from '../models/Tag'
 import User from '../models/User'
 
+interface Err {
+  field: string;
+  error: string;
+}
+
 class OriginController {
   public async index (req: Request, res: Response): Promise<Response> {
     try {
@@ -31,18 +36,21 @@ class OriginController {
   public async register (req: Request, res: Response): Promise<Response> {
     const { title, user, tag } = req.body
 
+    const err: Err[] = []
     try {
       if (await Origin.findOne({ title: title })) {
-        return res.status(500).send({ field: 'title', error: 'Origem já cadastrada!' })
+        err.push({ field: 'title', error: 'Origem já cadastrada!' })
       }
 
       if (!await Tag.findById(tag)) {
-        return res.status(500).send({ field: 'tag', error: 'Tag não encontrada!' })
+        err.push({ field: 'title', error: 'Origem já cadastrada!' })
       }
 
       if (!await User.findById(user)) {
-        return res.status(500).send({ field: 'user', error: 'Usuário não encontrado!' })
+        err.push({ field: 'title', error: 'Origem já cadastrada!' })
       }
+
+      if (err.length) { return res.status(500).send({ message: 'More than one error occurred', error: err }) }
 
       const origin = await Origin.create(req.body)
 

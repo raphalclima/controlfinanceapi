@@ -26,9 +26,9 @@ routes.put('/tags/:id', AuthMiddleware, TagController.update)
 routes.delete('/tags/:id', AuthMiddleware, TagController.destroy)
 
 // Origin Routes
-routes.get('/origin/:id', AuthMiddleware, OriginController.index)
-routes.post('/origin', AuthMiddleware, OriginController.register)
-routes.put('/origin/:id', AuthMiddleware, OriginController.update)
-routes.delete('/origin/:id', AuthMiddleware, OriginController.destroy)
+routes.get('/origins/:id', AuthMiddleware, OriginController.index)
+routes.post('/origins', AuthMiddleware, OriginController.register)
+routes.put('/origins/:id', AuthMiddleware, OriginController.update)
+routes.delete('/origins/:id', AuthMiddleware, OriginController.destroy)
 
 export default routes
