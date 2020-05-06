@@ -18,7 +18,7 @@ class FinanceController {
 
       return res.json(finance)
     } catch (err) {
-      return res.status(500).send({ message: 'Falha ao buscar finanças', error: err })
+      return res.status(500).send({ message: 'Falha ao buscar finanças!', error: err })
     }
   }
 
