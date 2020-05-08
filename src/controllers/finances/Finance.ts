@@ -7,6 +7,15 @@ interface Err {
   error: string;
 }
 
+interface FinanceInterface {
+  id: string;
+  date: Date;
+  type: number;
+  value: number;
+  tag: string;
+  origin: string;
+}
+
 class FinanceController {
   public async index (req: Request, res: Response): Promise<Response> {
     try {
@@ -15,8 +24,20 @@ class FinanceController {
       }
 
       const finance = await FinanceModel.find({ user: req.params.id })
+      const newListFinances = [] as FinanceInterface[]
 
-      return res.json(finance)
+      finance.map((item) => {
+        newListFinances.push({
+          id: item._id,
+          date: item.date,
+          type: item.type,
+          value: item.value,
+          tag: String(item.tag),
+          origin: String(item.origin)
+        })
+      })
+
+      return res.json(newListFinances)
     } catch (err) {
       return res.status(500).send({ message: 'Falha ao buscar finanças!', error: err })
     }
@@ -50,7 +71,15 @@ class FinanceController {
 
       if (err.length) { return res.status(500).send({ message: 'More than one error occurred', error: err }) }
 
-      const finance = await FinanceModel.create(req.body)
+      const response = await FinanceModel.create(req.body)
+      const finance = {
+        id: response._id,
+        date: response.date,
+        type: response.type,
+        value: response.value,
+        tag: String(response.tag),
+        origin: String(response.origin)
+      }
 
       return res.json(finance)
     } catch (err) {

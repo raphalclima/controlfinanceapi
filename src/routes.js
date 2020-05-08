@@ -33,6 +33,6 @@ routes.delete('/origins/:id', AuthMiddleware, OriginController.destroy)
 routes.get('/finances/:id', AuthMiddleware, FinanceController.index)
 routes.post('/finances', AuthMiddleware, FinanceController.register)
 routes.put('/finances/:id', AuthMiddleware, FinanceController.update)
-routes.delete('./finances/:id', AuthMiddleware, FinanceController.destroy)
+routes.delete('/finances/:id', AuthMiddleware, FinanceController.destroy)
 
 export default routes
